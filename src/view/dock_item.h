@@ -49,7 +49,7 @@ class DockItem {
   virtual int getHeightForSize(int size) const = 0;
 
   // Draws itself on the parent's canvas.
-  virtual void draw(QPainter* painter) const = 0;
+  virtual void draw(QPainter* painter, int position, int maxPosition) = 0;
 
   // Mouse press event handler.
   virtual void mousePressEvent(QMouseEvent* e) = 0;
@@ -135,7 +135,7 @@ class DockItem {
   int getWidth() const {
     return getWidthForSize(size_);
   }
-  
+
   int getHeight() const {
     return getHeightForSize(size_);
   }
@@ -153,7 +153,7 @@ class DockItem {
   // Center when minimized, as x or y depends on whether the orientation is
   // horizontal or vertical. This is used when calculating the size of the item
   // when the dock is in parabolic zoom.
-  int minCenter_; 
+  int minCenter_;
 
   // For animation.
   int startLeft_;

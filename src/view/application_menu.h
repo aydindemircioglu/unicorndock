@@ -65,7 +65,7 @@ class ApplicationMenu : public QObject, public IconBasedDockItem {
       int maxSize);
   virtual ~ApplicationMenu() = default;
 
-  void draw(QPainter* painter) const override;
+  void draw(QPainter* painter, int position, int maxPosition)  override;
   void mousePressEvent(QMouseEvent* e) override;
   void loadConfig() override;
 

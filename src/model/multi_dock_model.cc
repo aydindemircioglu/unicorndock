@@ -62,6 +62,8 @@ LauncherConfig::LauncherConfig(const QString& desktopFile) {
   KDesktopFile file(desktopFile);
   name = file.readName();
   icon = file.readIcon();
+  std::cout << "Reading from  " << icon.toStdString() << "\n";
+  std::cout << "\t with name " << name.toStdString() << "\n";
   command = filterFieldCodes(file.entryMap("Desktop Entry")["Exec"]);
   taskCommand = getTaskCommand(command);
 }

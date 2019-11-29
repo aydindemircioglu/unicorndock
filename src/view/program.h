@@ -56,7 +56,7 @@ class Program : public QObject, public IconBasedDockItem {
 
   void setLaunching(bool launching) { launching_ = launching; }
 
-  void draw(QPainter* painter) const override;
+  void draw(QPainter* painter, int position, int maxPosition)  override;
 
   void mousePressEvent(QMouseEvent* e) override;
 

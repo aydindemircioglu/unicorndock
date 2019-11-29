@@ -53,7 +53,7 @@ Clock::Clock(DockPanel* parent, MultiDockModel* model,
   timer->start(1000);  // update the time every second.
 }
 
-void Clock::draw(QPainter *painter) const {
+void Clock::draw(QPainter *painter,  int position, int maxPosition)  {
   const QString timeFormat = model_->use24HourClock() ? "hh:mm" : "hh:mm AP";
   const QString time = QTime::currentTime().toString(timeFormat);
   // The reference time used to calculate the font size.

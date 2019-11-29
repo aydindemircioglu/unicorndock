@@ -25,6 +25,7 @@
 #include <QMimeData>
 #include <QStringBuilder>
 #include <QUrl>
+#include <iostream>
 
 #include <KDesktopFile>
 #include <KIconLoader>
@@ -72,12 +73,13 @@ ApplicationMenu::ApplicationMenu(
           this, SLOT(reloadMenu()));
 }
 
-void ApplicationMenu::draw(QPainter* painter) const {
+void ApplicationMenu::draw(QPainter* painter, int position, int maxPosition)  {
+  std::cout << "AppMenu " << position << "\n";
   if (showingMenu_) {
     drawHighlightedIcon(model_->backgroundColor(), left_, top_, getWidth(), getHeight(),
                         minSize_ / 4 - 4, size_ / 8, painter);
   }
-  IconBasedDockItem::draw(painter);
+  IconBasedDockItem::draw(painter, position, maxPosition);
 }
 
 void ApplicationMenu::mousePressEvent(QMouseEvent *e) {

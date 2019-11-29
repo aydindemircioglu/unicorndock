@@ -24,6 +24,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QString>
+#include <QImage>
 #include <Qt>
 
 #include "dock_item.h"
@@ -40,16 +41,20 @@ class IconBasedDockItem : public DockItem {
   virtual ~IconBasedDockItem() {}
 
   int getWidthForSize(int size) const override {
-    return getIcon(size).width();
+    return getIconWidth(size);
   }
 
   int getHeightForSize(int size) const override {
-    return getIcon(size).height();
+    return getIconHeight(size);
   }
 
-  void draw(QPainter* painter) const override;
+  void draw(QPainter* painter, int position, int maxPosition) override;
+
+  int getIconWidth (int size) const;
+  int getIconHeight (int size) const;
 
   // Sets the icon on the fly.
+  void updateIconCache (int size, int minSize_);
   void setIcon(const QPixmap& icon);
   void setIconName(const QString& iconName);
   const QPixmap& getIcon(int size) const;
@@ -57,13 +62,20 @@ class IconBasedDockItem : public DockItem {
 
  protected:
   std::vector<QPixmap> icons_;
+  std::vector<int> iconsHeights_;
+  std::vector<int> iconsWidths_;
 
   QString iconName_;
 
  private:
   static const int kIconLoadSize = 128;
+  QImage image_;
+  QImage originalImage_;
+  int position_;
 
+  void recolorIcon (QImage& img, int position, int maxPosition);
   void generateIcons(const QPixmap& icon);
+  void mipmapIcons (const QImage& image);
 
   friend class DockPanel;
 };

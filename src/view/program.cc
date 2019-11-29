@@ -55,7 +55,8 @@ Program::Program(DockPanel* parent, MultiDockModel* model, const QString& label,
   });
 }
 
-void Program::draw(QPainter *painter) const {
+void Program::draw(QPainter *painter, int position, int maxPosition)  {
+  // std::cout << " program " << position << "\n";
   if (launching_ || (!tasks_.empty() && active()) || attentionStrong_) {
     drawHighlightedIcon(model_->backgroundColor(), left_, top_, getWidth(), getHeight(),
                         5, size_ / 8, painter);
@@ -63,7 +64,7 @@ void Program::draw(QPainter *painter) const {
     drawHighlightedIcon(model_->backgroundColor(), left_, top_, getWidth(), getHeight(),
                         5, size_ / 8, painter, 0.25);
   }
-  IconBasedDockItem::draw(painter);
+  IconBasedDockItem::draw(painter, position, maxPosition);
 }
 
 void Program::mousePressEvent(QMouseEvent* e) {

@@ -415,7 +415,8 @@ void DockPanel::paintEvent(QPaintEvent* e) {
   // Draw the items from the end to avoid zoomed items getting clipped by
   // non-zoomed items.
   for (int i = itemCount() - 1; i >= 0; --i) {
-    items_[i]->draw(&painter);
+    // std::cout << " HERE: painting " << i << "\n";
+    items_[i]->draw(&painter, i, itemCount());
   }
 }
 
@@ -667,6 +668,7 @@ void DockPanel::initApplicationMenu() {
 
 void DockPanel::initLaunchers() {
   for (const auto& launcherConfig : model_->dockLauncherConfigs(dockId_)) {
+    std::cout << "Init launcher " << launcherConfig.name.toStdString() << "\n";
     items_.push_back(std::make_unique<Program>(
         this, model_, launcherConfig.name, orientation_, launcherConfig.icon, minSize_,
         maxSize_, launcherConfig.command, launcherConfig.taskCommand, /*pinned=*/true));
@@ -771,7 +773,7 @@ void DockPanel::initLayoutVars() {
   itemSpacing_ = static_cast<int>(minSize_ * spacingFactor_);
   parabolicMaxX_ = static_cast<int>(2.5 * (minSize_ + itemSpacing_));
   numAnimationSteps_ = 20;
-  animationSpeed_ = 16;
+  animationSpeed_ = 24;
 
   tooltip_.setFontSize(tooltipFontSize_);
   tooltip_.setFontBold(true);

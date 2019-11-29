@@ -25,6 +25,8 @@
 #include <QPainter>
 #include <QPixmap>
 
+#include <iostream>
+
 #include <KLocalizedString>
 #include <KWindowSystem>
 
@@ -37,7 +39,7 @@ namespace ksmoothdock {
 DesktopSelector::DesktopSelector(DockPanel* parent, MultiDockModel* model,
                                  Qt::Orientation orientation, int minSize,
                                  int maxSize, int desktop, int screen)
-    : IconBasedDockItem(parent, 
+    : IconBasedDockItem(parent,
           i18n("Desktop ") + QString::number(desktop),
           orientation, "" /* no icon yet */, minSize, maxSize),
       model_(model),
@@ -50,9 +52,10 @@ DesktopSelector::DesktopSelector(DockPanel* parent, MultiDockModel* model,
   loadConfig();
 }
 
-void DesktopSelector::draw(QPainter* painter) const {
+void DesktopSelector::draw(QPainter* painter, int position, int maxPosition)  {
+  std::cout << "DesktopSelector " << position << "\n";
   if (hasCustomWallpaper_) {
-    IconBasedDockItem::draw(painter);
+    IconBasedDockItem::draw(painter, position, maxPosition);
   } else {
     // Draw rectangles with desktop numbers if no custom wallpapers set.
     QColor fillColor = model_->backgroundColor().lighter();

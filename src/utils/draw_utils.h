@@ -60,6 +60,7 @@ inline void drawBorderedText(int x, int y, int width, int height, int flags,
 inline void drawHighlightedIcon(QColor bgColor, int left, int top, int width, int height,
                                 int padding, int roundedRectRadius, QPainter* painter,
                                 float alpha = 0.42) {
+  alpha = 0.0;
   painter->setRenderHint(QPainter::Antialiasing);
   QColor fillColor = bgColor.lighter(500);
   fillColor.setAlphaF(alpha);

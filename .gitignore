@@ -1,0 +1,14 @@
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+cmake_uninstall.cmake
+CTestTestfile.cmake
+*_test/
+*_autogen*/
+*_test*/
+*_test
+libksmoothdock_lib.a
+ksmoothdock
+libunicorndock_lib.a
+unicorndock

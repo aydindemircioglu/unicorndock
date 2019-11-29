@@ -40,7 +40,7 @@ class Clock : public QObject, public IconlessDockItem {
         int minSize, int maxSize);
   virtual ~Clock() = default;
 
-  void draw(QPainter* painter) const override;
+  void draw(QPainter* painter, int position, int maxPosition) override;
   void mousePressEvent(QMouseEvent* e) override;
   void loadConfig() override;
   QString getLabel() const override;
