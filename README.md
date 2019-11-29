@@ -1,3 +1,27 @@
+unicornDock is a unicornly cool desktop panel that magically will change the color of all icons
+in the dock to the colors of a  unicornly rainbow.
+
+
+![unicornDock in action](unicorndock.png)
+
+
+It's an adaptation of KSmoothDock.
+
+
+Notes
+=====
+
+This is a very personal project, so it is adapted to my computer. This means:
+It works only with 4k resolution (will be too large by default for Full HD)
+and it needs Moka icons. Very special ones. My ones. Will upload them, if
+anyone asks for them. Many things needs still to be done and fixed, but well,
+whatever, works for me now.
+
+
+
+---
+
+
 KSmoothDock is a cool desktop panel with parabolic zooming effect for KDE Plasma 5, with the focus on smooth zooming effect and being simple and easy to use.
 
 KSmoothDock is written in C++ and depends on Qt 5 and KDE Frameworks 5.
