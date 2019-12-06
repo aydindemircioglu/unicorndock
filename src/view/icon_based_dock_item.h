@@ -26,6 +26,8 @@
 #include <QString>
 #include <QImage>
 #include <Qt>
+#include <QSettings>
+
 
 #include "dock_item.h"
 
@@ -66,6 +68,7 @@ class IconBasedDockItem : public DockItem {
   std::vector<int> iconsWidths_;
 
   QString iconName_;
+
 
  private:
   static const int kIconLoadSize = 128;

@@ -27,6 +27,7 @@ set(SRCS
     view/application_menu.cc
     view/calendar.cc
     view/clock.cc
+    view/cpuload.cc
     view/desktop_selector.cc
     view/dock_panel.cc
     view/edit_launchers_dialog.cc

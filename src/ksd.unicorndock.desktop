@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=KSmoothDock
+Name=unicornDock
 GenericName=Desktop Panel
 Icon=user-desktop
-Exec=ksmoothdock
+Exec=unicorndock
 Terminal=false
 Categories=Qt;KDE;Utility;

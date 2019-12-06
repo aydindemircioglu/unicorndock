@@ -19,6 +19,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QIcon>
+#include <QSettings>
 
 #include <KAboutData>
 #include <KDBusService>
@@ -32,18 +33,23 @@ int main(int argc, char** argv) {
   KDBusService service(KDBusService::Unique);
 
   KAboutData about(
-      "ksmoothdock",
-      "KSmoothDock",
+      "unicorndock",
+      "unicornDock",
       "6.1",
-      i18n("A cool desktop panel for KDE Plasma 5"),
+      i18n("A unicorn desktop panel for linux"),
       KAboutLicense::GPL_V3,
-      i18n("Copyright (C) 2019 Viet Dang (dangvd@gmail.com)"),
+      i18n("Copyright (C) 2019 Viet Dang (dangvd@gmail.com), unicornification by Aydin Demircioglu (unicorn@cloned.de)"),
       "",
-      "https://dangvd.github.io/ksmoothdock");
+      "https://github.com/aydindemircioglu/unicorndock");
   KAboutData::setApplicationData(about);
   QApplication::setWindowIcon(QIcon::fromTheme("user-desktop"));
 
-  ksmoothdock::MultiDockModel model(QDir::homePath() + "/.ksmoothdock");
+  QSettings::setDefaultFormat(QSettings::IniFormat);
+  //QApplication::setApplicationName("unicorndock");
+  QApplication::setOrganizationName("unicorndock");
+  //QApplication::setOrganizationDomain("");
+
+  ksmoothdock::MultiDockModel model(QDir::homePath() + "/.unicorndock");
   ksmoothdock::MultiDockView view(&model);
   view.show();
   return app.exec();

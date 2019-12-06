@@ -23,6 +23,10 @@
 #include <math.h>
 
 #include <QImage>
+#include <QDir>
+#include <QSettings>
+#include <QString>
+
 
 namespace ksmoothdock {
 
@@ -36,6 +40,8 @@ IconBasedDockItem::IconBasedDockItem(DockPanel* parent, const QString& label, Qt
     iconsWidths_ (maxSize - minSize + 1) {
   position_ = -1;
   setIconName(iconName);
+  QSettings settings;
+  std::cout << "Reading settings from "  << settings.fileName().toStdString() << "\n";
 }
 
 IconBasedDockItem::IconBasedDockItem(DockPanel* parent, const QString& label,
@@ -47,8 +53,9 @@ IconBasedDockItem::IconBasedDockItem(DockPanel* parent, const QString& label,
     iconsWidths_ (maxSize - minSize + 1) {
   position_ = -1;
   setIcon(icon);
+  QSettings settings;
+  std::cout << "Reading settings from "  << settings.fileName().toStdString() << "\n";
 }
-
 
 
 void IconBasedDockItem::recolorIcon (QImage& img, int position, int maxPosition) {
@@ -193,17 +200,17 @@ void IconBasedDockItem::setIconName(const QString& iconName) {
 
     // overrides, maybe load these from a .json or something
     QString pngName (iconName);
-    if (label_ == "Gnome-control-center") {
-      pngName = "winecfg";
-    }
-    if (label_ == "cloud-drive-ui") {
-      pngName = "web-jolicloud";
-    }
-    if (label_ == "Atom") {
-      pngName = "atom";
-    }
-    if (label_ == "TelegramDesktop") {
-      pngName = "telegram";
+    QSettings settings;
+    settings.beginGroup("iconoverrides");
+    // QStringList childKeys = settings.childGroups();
+    QStringList childKeys = settings.childKeys();
+    for (const auto& key:childKeys) {
+      // do override
+      if (label_ == key) {
+        pngName = settings.value(key).toString();
+      }
+      // std::cout << "XXX: " << key.toStdString() << "\n";
+      // std::cout << "XXX: " << settings.value(key).toString().toStdString() << "\n";
     }
 
     std::string newIconPath = "/home/aydin/.icons/Moka/stash/" + pngName.toStdString() + ".png";
