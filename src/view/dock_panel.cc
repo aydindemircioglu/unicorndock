@@ -725,17 +725,39 @@ void DockPanel::addTask(const TaskInfo& task) {
   }
 
   // Adds a new program.
+
+  std::cout << "** task: " << task.program.toStdString() << "\n";
   auto app = model_->findApplication(task.command);
   const QString& command = app ? app->taskCommand : task.command;
+
+
+  // another set of overrides, as some programs are called... just strange
+  QSettings settings;
+  settings.beginGroup("taskoverrides");
+  QStringList childKeys = settings.childKeys();
+  QString appName = task.program;
+  if (app) {
+    appName = app->name;
+  }
+  for (const auto& key:childKeys) {
+    // do override
+    if (task.program == key) {
+      std::cout << "### overriding " << task.program.toStdString() << "\n";
+      appName = settings.value(key).toString();
+    }
+  }
+
   int i = 0;
   for (; i < itemCount() && items_[i]->beforeTask(command); ++i);
   if (app) {
+    // std::cout << "// App name: " << app->command.toStdString() << "\n";
+    // std::cout << "// App name: " << app->taskCommand.toStdString() << "\n";
     items_.insert(items_.begin() + i, std::make_unique<Program>(
-        this, model_, app->name, orientation_, app->icon, minSize_,
+        this, model_, appName, orientation_, app->icon, minSize_,
         maxSize_, app->command, app->taskCommand, /*pinned=*/false));
   } else {
     items_.insert(items_.begin() + i, std::make_unique<Program>(
-        this, model_, task.program, orientation_, "xapp", minSize_,
+        this, model_, appName, orientation_, "xapp", minSize_,
         maxSize_, task.command, task.command, /*pinned=*/false));
   }
   items_[i]->addTask(task);
@@ -770,8 +792,10 @@ void DockPanel::initClock() {
 }
 
 void DockPanel::initLayoutVars() {
+  int pDistance = 5;
+
   itemSpacing_ = static_cast<int>(minSize_ * spacingFactor_);
-  parabolicMaxX_ = static_cast<int>(2.5 * (minSize_ + itemSpacing_));
+  parabolicMaxX_ = static_cast<int>((float)pDistance/2.0 * (minSize_ + itemSpacing_));
   numAnimationSteps_ = 20;
   animationSpeed_ = 24;
 
@@ -784,20 +808,11 @@ void DockPanel::initLayoutVars() {
   // The difference between minWidth_ and maxWidth_
   // (horizontal mode) or between minHeight_ and
   // maxHeight_ (vertical mode).
-  int delta = 0;
-  if (itemCount() >= 5) {
-    delta = parabolic(0) + 2 * parabolic(distance) +
-        2 * parabolic(2 * distance) - 5 * minSize_;
-  } else if (itemCount() == 4) {
-    delta = parabolic(0) + 2 * parabolic(distance) +
-        parabolic(2 * distance) - 4 * minSize_;
-  } else if (itemCount() == 3) {
-    delta = parabolic(0) + 2 * parabolic(distance) - 3 * minSize_;
-  } else if (itemCount() == 2) {
-    delta = parabolic(0) + parabolic(distance) - 2 * minSize_;
-  } else if (itemCount() == 1) {
-    delta = parabolic(0) - minSize_;
-  }
+  int d = std::min(pDistance, itemCount());
+  int d2 = d >> 1;
+  int delta = parabolic(0) + d2 * parabolic(distance) +
+      d2 * parabolic(d2 * distance) - d * minSize_;
+  // skip the <5 icon cases for now
 
   if (orientation_ == Qt::Horizontal) {
     minWidth_ = 0;

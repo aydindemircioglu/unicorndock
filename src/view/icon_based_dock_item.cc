@@ -200,22 +200,32 @@ void IconBasedDockItem::setIconName(const QString& iconName) {
 
     // overrides, maybe load these from a .json or something
     QString pngName (iconName);
-    QSettings settings;
-    settings.beginGroup("iconoverrides");
-    // QStringList childKeys = settings.childGroups();
-    QStringList childKeys = settings.childKeys();
-    for (const auto& key:childKeys) {
-      // do override
-      if (label_ == key) {
-        pngName = settings.value(key).toString();
+    {
+      QSettings settings;
+      settings.beginGroup("iconoverrides");
+      // QStringList childKeys = settings.childGroups();
+      QStringList childKeys = settings.childKeys();
+      for (const auto& key:childKeys) {
+        // do override
+        if (label_ == key) {
+          pngName = settings.value(key).toString();
+        }
       }
-      // std::cout << "XXX: " << key.toStdString() << "\n";
-      // std::cout << "XXX: " << settings.value(key).toString().toStdString() << "\n";
     }
 
-    std::string newIconPath = "/home/aydin/.icons/Moka/stash/" + pngName.toStdString() + ".png";
-    QString qstr = QString::fromStdString(newIconPath);
-    std::cout << "Loading from " << newIconPath << " here.\n";
+    // put together icon path
+    // FIXME: use os independent path join 
+    QString qstr;
+    {
+      QSettings settings;
+      settings.beginGroup("global");
+      QStringList childKeys = settings.childKeys();
+      std::cout << "ICONPATH: " << settings.value("iconPath").toString().toStdString() << "\n";
+      std::string newIconPath = settings.value("iconPath").toString().toStdString() + "/" + pngName.toStdString() + ".png";
+      qstr = QString::fromStdString(newIconPath);
+      std::cout << "Loading from " << newIconPath << " here.\n";
+    }
+
     QPixmap icon;
     icon.load (qstr);
     std::cout << "Icon has size " << icon.height() << "x" << icon.width() << ".\n";
